@@ -1,0 +1,146 @@
+#include<iostream>
+using namespace std;
+class Node {
+private:
+	int data;
+	Node* next;
+public:
+	Node(int dataa) {
+		this->data = dataa;
+		next = nullptr;
+	}
+	friend class Linkedlist;//so that linked list can access node ke priv members
+};
+class Linkedlist {
+private:
+	Node* head;
+	Node* tail;
+public:
+	Linkedlist() {
+		head = nullptr;
+		tail = nullptr;
+	}
+	void insertatend(int value) {
+		Node* newnode = new Node(value);
+		if (head == nullptr) {
+			head = tail = newnode;
+		}
+		else {
+			tail->next = newnode;
+			newnode->next = nullptr;
+			tail = newnode;
+		}
+	}
+	void insertatstart(int value) {
+		Node* newnode = new Node(value);
+		if (head == nullptr) {
+			head = tail = newnode;
+		}
+		else {
+			newnode->next = head;
+			head = newnode;
+		}
+	}
+	void print() {
+		if (head == nullptr) {
+			return;
+		}
+		Node* current = head;
+		while (current != nullptr) {//doing this taake tail tak ja ke print ho 
+			cout << current->data << " ";
+			current = current->next;
+		}
+	}
+	void printnodeatpos(int pos) {
+		int index = 1;
+		if (pos < index) {
+			cout << "Invalid position!";
+			return;
+		}
+		Node* current = head;
+		while (index != pos) {
+			current = current->next;
+			index++;
+		}
+		cout << "\nIndex at position " << pos << " is " << current->data << endl;
+	}
+	int sizee() {
+		int size = 0;
+		Node* current = head;
+		while (current != nullptr) { //i always do head != nullptr PLS DONT DO THIS OK!!!!
+			size++;
+			current = current->next; //always update this cuz wo next node pe kaise jayega na
+		}
+		return size;
+	}
+	void deletefirstnode() {
+		Node* next_node = head->next;
+		delete head;
+		head = next_node;
+	}
+	void deletelastnode() {
+		int size = sizee();
+		Node* current = head;
+		Node* temp = tail;
+		if (current == nullptr) {
+			return;
+		}
+		else if (current->next == nullptr) {
+			delete head;
+			head = tail = nullptr;
+			return;
+		}
+		delete temp;
+		for (int i = 1; i < size - 1; i++) {
+			current = current->next;
+		}
+		current->next = nullptr;//bec current ne tail ban'na hai
+		tail = current;
+	}
+	void deletenode(int pos) {
+		Node* previous = head; 
+		Node* agla = head; 
+		Node* target = head; 
+		int size = sizee();  
+		if (head == nullptr) { 
+			cout << "List is empty!" << endl; 
+			return;
+		}
+		if ((pos < 1) || (pos > size)) {
+			cout << "Invalid Index!";
+			cout << endl;
+		}
+		int index = 1;
+		while (index != pos) {
+			target = target->next;
+			index++;
+		}
+		for (int i = 1; i < pos - 1; i++) {
+			previous = previous->next;
+		}
+		for (int i = 1; i <= pos; i++) {
+			agla = agla->next;
+		}
+		delete target;//meine target pehle delete kardia tha
+		previous->next = agla;
+
+	}
+};
+int main() {
+	Linkedlist l1;
+	l1.insertatend(9);
+	l1.insertatend(10);
+	l1.insertatstart(8);
+	l1.insertatstart(7);
+	l1.insertatstart(1);
+	l1.print();
+	cout << "\nsize of the list is: " << l1.sizee() << endl;
+	l1.deletefirstnode();
+	l1.print();
+	cout << endl;
+	l1.deletelastnode();
+	l1.print();
+	cout << endl;
+	l1.deletenode(2);
+	l1.print();
+}
