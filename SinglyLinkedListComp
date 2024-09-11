@@ -1,0 +1,172 @@
+#include<iostream>
+using namespace std;
+class Node {
+private:
+	Node* next; 
+	int data; 
+public:
+	Node(int d) {
+		this->data = d;
+		next = nullptr;
+	}
+	friend class linkedlist;
+};
+class linkedlist {
+private:
+	Node* head; 
+	Node* tail;
+public:
+	linkedlist() {
+		head = tail = nullptr;
+	}
+	void insertathead(int data) {
+		Node* newnode = new Node(data);
+		if (head == nullptr) {
+			head = tail = newnode;
+			newnode->next = nullptr;
+			return;
+		}
+		newnode->next = head;
+		head = newnode;
+	}
+	void insertatend(int data) {
+		Node* newnode = new Node(data);
+		if (head == nullptr) { 
+			head = tail = newnode; 
+			newnode->next = nullptr; 
+			return;
+		}
+		tail->next = newnode; 
+		tail = newnode; 
+		newnode->next = nullptr;
+	}
+	void printforw() {
+		Node* current = head;
+		while (current != nullptr) {
+			cout << current->data << "->";
+			current = current->next;
+		}
+		cout << "NULL";
+	}
+	void deletefromhead() {
+		Node* current = head;
+		if (head == nullptr) {
+			return;
+		}
+		if (head->next == nullptr) {
+			head = tail = nullptr;
+			return;
+		}
+		head = current->next;
+		delete current;
+	}
+	int sizee() {
+		Node* current = head;
+		int size = 0;
+		while (current != nullptr) {
+			size++;
+			current = current->next;
+		}
+		return size;
+	}
+	void deletefromtail() {
+		Node* current = head;
+		Node* newtail;
+		Node* tailtodel;
+		int index = 1;
+		if (head == nullptr) {
+			return;
+		}
+		if (head->next == nullptr) {
+			head = tail = nullptr;
+			return;
+		}
+		while (index < sizee()-1) {
+			current = current->next;
+			index++;
+		}
+		newtail = current;
+		tailtodel = current->next; 
+		tail = newtail;
+		delete tailtodel;
+		tail->next = nullptr;
+	}
+	int getmiddle() {
+		int mid = (sizee() / 2);
+		Node* current = head;
+		int index = 0;
+		if (head == nullptr) {
+			cout << "List is empty\n";
+			return -1;
+		}
+		if (head == tail) {
+			cout << "There is only 1 element.";
+			return head->data;
+		}
+		if (sizee() < 3) {
+			cout << "No middle exists\n";
+			return -1;
+		}
+		while (index < mid) {
+			current = current->next;
+			index++;
+		}
+		return current->data; 
+	}
+	bool isempty() {
+		if (head == nullptr) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
+	}
+	void insertafter(int val, int pos) {
+		Node* newnode = new Node(val); 
+		Node* current = head; 
+		int index = 1;
+		if (pos<sizee() or pos>sizee()) {
+			cout << "Index out of bounds.";
+			return; 
+		}
+		if (head == nullptr) {
+			return;
+		}
+		while (index < pos) {
+			current = current->next;
+			index++;
+		}
+		newnode->next = current->next;
+		current->next = newnode;
+	}
+	void insertbefore(int val, int pos) {
+		Node* newnode = new Node(val);
+		int index = 1;
+		Node* current = head;  
+		if (pos<sizee() or pos>sizee()) {
+			cout << "Index out of bounds.\n";
+			return;
+		}
+		if (head == nullptr) {
+			return;
+		}
+		while (index < pos - 1) {
+			current = current->next;
+			index++;
+		}
+		newnode->next = current->next;  
+		current->next = newnode;
+	}
+};
+int main() {
+	linkedlist l1;
+	l1.insertathead(1);
+	l1.insertatend(2);
+	l1.insertatend(3);
+	/*l1.insertafter(2, 2);*/
+	l1.insertbefore(4, 3);
+	/*l1.deletefromhead();
+	l1.deletefromtail();*/
+	/*cout << "Mid is: " << l1.getmiddle() << endl;*/
+	l1.printforw();
+}
