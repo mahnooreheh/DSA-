@@ -1,0 +1,95 @@
+#include<iostream>
+using namespace std;
+template<typename t>
+class dequeue { //double ended queue
+private:
+	t* arr;
+	int size, capacity, front, rear;
+public:
+	dequeue(int size) {
+		this->size = size; 
+		arr = new t[size];
+		capacity = 0;
+		front = -1;
+		rear  = -1; 
+	}
+	bool isfull() {
+		return capacity == size;
+	}
+	bool isempty() {
+		return rear == -1;
+	}
+	bool push_front(t data) {
+		if (isfull()) {
+			cout << "array is full!";
+			return false;
+		}
+		if (front == -1) { //start push 
+			front = rear = 0;  
+			arr[front] = data; 
+			capacity++;
+			return true; 
+		}
+		if (front == 0) { //circular motion 
+			front = size - 1;
+			arr[front] = data;
+			capacity++;
+			return true;
+		}
+		front--; //normal 
+		arr[front] = data;
+		capacity++; 
+		return true; 
+	}
+	bool pushrear(t data) { //pushing to end 
+		if (isfull()) {
+			return false; 
+		}
+		if (rear == -1) {
+			front = rear = 0;
+			arr[rear] = data;
+			capacity++; 
+			return true;
+		}
+		rear = (rear + 1) % size;
+		arr[rear] = data;
+		capacity++;
+		return true; 
+	}
+	void popfront() {//removing front 
+		if (isempty()) {
+			cout << "array is empty";
+			return;
+		}
+		cout << arr[front] << " ";
+		if (front == rear) {
+			front = rear = -1;
+
+		}
+		else {
+			front = (front + 1) % size;
+
+		}
+		capacity--;
+	}
+	void popback() { //removing from rear 
+		if (isempty()) {
+			cout << "array is empty";
+			return;
+		}
+		cout << arr[rear] << " ";
+		if (front == rear) { 
+			front = rear = -1;
+			capacity--; 
+		}
+		if (rear == 0) {
+			rear = size - 1;
+			capacity--;
+		}
+		rear--;
+		capacity--;
+	}
+};
+int main() {
+
+}
