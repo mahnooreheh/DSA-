@@ -22,8 +22,18 @@ void addedge1(vector<vector<int>>& adj, int u, int v) {
 	adj[v].push_back(u); 
 }
 
-//for weighted graphs
-
+void addedge2(vector < vector<pair<int, int>>>& adj, int u, int v, int w) {
+	adj[u].push_back({u,w});
+}
+void printadjlistweighted(vector<vector<pair<int, int>>>& adj) {
+	for (int i = 0; i < adj.size(); i++) {
+		cout << i << " ";
+		for (auto& j : adj[i]) {
+			cout << j.first << ", " << j.second;
+		}
+		cout << endl;
+	}
+}
 int main() {
 	int V = 3;
 	vector<vector<int>>adj(V);
